@@ -165,6 +165,11 @@ caption = _caption;
                     self.responseBlock(operation, responseObject, nil);
                 }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                UIImage *image = [UIImage imageWithData:operation.responseData];
+                if (image != nil) {
+                    self.underlyingImage = image;
+                    [self performSelectorOnMainThread:@selector(imageLoadingComplete) withObject:nil waitUntilDone:NO];
+                }
                 if (self.responseBlock) {
                     self.responseBlock(operation, nil, error);
                 }
